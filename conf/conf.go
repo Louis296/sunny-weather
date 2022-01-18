@@ -6,9 +6,19 @@ import (
 )
 
 type Conf struct {
-	Server struct {
-		Port string `yaml:"port"`
-	} `yaml:"server"`
+	Server   Server   `yaml:"server"`
+	Database Database `yaml:"database"`
+}
+type Server struct {
+	Port int `yaml:"port"`
+}
+type Database struct {
+	URL          string `yaml:"url"`
+	UserName     string `yaml:"userName"`
+	Password     string `yaml:"password"`
+	DatabaseName string `yaml:"databaseName"`
+	MaxConn      int    `yaml:"maxConn"`
+	MaxOpen      int    `yaml:"maxOpen"`
 }
 
 func GetConf() (Conf, error) {

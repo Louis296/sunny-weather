@@ -19,6 +19,10 @@ type response struct {
 func handler(c *gin.Context, h interface{}) {
 	handler, ok := h.(ParserHandler)
 	if ok {
+		err := c.Bind(handler)
+		if err != nil {
+			fmt.Print(err)
+		}
 		data, err := handler.Handler(c)
 		if err != nil {
 			fmt.Print(err)

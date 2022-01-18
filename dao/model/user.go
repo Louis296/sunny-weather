@@ -1,12 +1,12 @@
 package model
 
 type User struct {
-	base
+	Base
 	Email    string `gorm:"email"`
 	Name     string `gorm:"name"`
 	Password string `gorm:"password"`
 }
 
-func (u User) TableName() string {
+func (u *User) TableName() string {
 	return "user"
 }

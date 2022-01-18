@@ -1,2 +1,9 @@
 server:
   port: 8081
+database:
+  url: 127.0.0.1:3306
+  userName: root
+  password: 137238fh
+  databaseName: sunny_weather
+  maxConn: 10
+  maxOpen: 100
