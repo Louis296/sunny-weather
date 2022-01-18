@@ -9,7 +9,10 @@ import (
 func Init(r *gin.Engine) {
 	// init router
 	r.GET("/ping", handler.Ping)
+	r.POST("/register", handler.UserRegister)
+	r.POST("/", handler.MainHandler)
 
+	// init configure
 	configure, err := conf.GetConf()
 	if err != nil {
 		panic(err)
