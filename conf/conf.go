@@ -8,6 +8,7 @@ import (
 type Conf struct {
 	Server   Server   `yaml:"server"`
 	Database Database `yaml:"database"`
+	Jwt      Jwt      `yaml:"jwt"`
 }
 type Server struct {
 	Port int `yaml:"port"`
@@ -19,6 +20,9 @@ type Database struct {
 	DatabaseName string `yaml:"databaseName"`
 	MaxConn      int    `yaml:"maxConn"`
 	MaxOpen      int    `yaml:"maxOpen"`
+}
+type Jwt struct {
+	Secret string `yaml:"secret"`
 }
 
 func GetConf() (Conf, error) {

@@ -8,3 +8,7 @@ import (
 func UserRegister(c *gin.Context) {
 	handler(c, &service.UserRegisterReq{})
 }
+
+func UserLogin(c *gin.Context) {
+	handler(c, &service.UserLoginReq{})
+}

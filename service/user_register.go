@@ -1,9 +1,11 @@
 package service
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/louis296/sunny-weather/dao"
 	"github.com/louis296/sunny-weather/dao/model"
+	"github.com/louis296/sunny-weather/pkg/common"
 )
 
 type UserRegisterReq struct {
@@ -26,10 +28,14 @@ func (r *UserRegisterReq) Handler(c *gin.Context) (interface{}, error) {
 			tx.Commit()
 		}
 	}()
+	existUser := dao.GetUserByEmail(r.Email)
+	if existUser != nil {
+		return nil, errors.New("duplicate user email")
+	}
 	user := model.User{
 		Email:    r.Email,
 		Name:     r.Name,
-		Password: r.Password,
+		Password: common.GetMD5WithSalt(r.Password),
 	}
 	err := dao.CreateUser(user, tx)
 	if err != nil {

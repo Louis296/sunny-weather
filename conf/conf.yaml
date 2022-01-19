@@ -7,3 +7,5 @@ database:
   databaseName: sunny_weather
   maxConn: 10
   maxOpen: 100
+jwt:
+  secret: DkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM
