@@ -1,10 +1,15 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"reflect"
 	"time"
 )
+
+type Handler struct {
+}
 
 type ParserHandler interface {
 	Handler(c *gin.Context) (interface{}, error)
@@ -43,5 +48,22 @@ func doResp(c *gin.Context, data interface{}, err error) {
 }
 
 func MainHandler(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "protect"})
+	action, ok := c.GetQuery("Action")
+	if !ok {
+		doResp(c, nil, errors.New("no action"))
+		c.Abort()
+	}
+	version, ok := c.GetQuery("Version")
+	if !ok {
+		doResp(c, nil, errors.New("no version"))
+		c.Abort()
+	}
+	h := Handler{}
+	hv := reflect.ValueOf(h)
+	f := hv.MethodByName(action + version)
+	if !f.IsValid() {
+		doResp(c, nil, errors.New("no such api"))
+		c.Abort()
+	}
+	f.Call([]reflect.Value{reflect.ValueOf(c)})
 }
