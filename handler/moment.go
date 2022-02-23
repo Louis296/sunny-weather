@@ -8,3 +8,19 @@ import (
 func (r Handler) CreateMoment20220101(c *gin.Context) {
 	handler(c, &moment_service.CreateMomentReq{})
 }
+
+func (r Handler) DeleteMoment20220101(c *gin.Context) {
+	handler(c, &moment_service.DeleteMomentReq{})
+}
+
+func (r Handler) UpdateMoment20220101(c *gin.Context) {
+	handler(c, &moment_service.UpdateMomentReq{})
+}
+
+func (r Handler) ListSelfMoment20220101(c *gin.Context) {
+	handler(c, &moment_service.ListSelfMomentReq{})
+}
+
+func (r Handler) ListMoment20220101(c *gin.Context) {
+	handler(c, &moment_service.ListMomentReq{})
+}

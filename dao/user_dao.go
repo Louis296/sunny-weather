@@ -31,3 +31,17 @@ func GetUserById(id int) *model.User {
 	}
 	return &user
 }
+
+func GetUserIdLookup(ids ...int) (map[int]model.User, error) {
+	var users []model.User
+	sql := DB
+	sql = sql.Model(&model.User{}).Where("id in ?", ids)
+	if err := sql.Scan(&users).Error; err != nil {
+		return nil, err
+	}
+	result := make(map[int]model.User)
+	for _, user := range users {
+		result[user.Id] = user
+	}
+	return result, nil
+}

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/louis296/sunny-weather/dao"
 	"github.com/louis296/sunny-weather/dao/model"
-	"github.com/louis296/sunny-weather/pkg/enum"
+	"github.com/louis296/sunny-weather/pkg/common"
 )
 
 type CreateMomentReq struct {
@@ -20,8 +20,7 @@ type CreateMomentResp struct {
 
 func (r *CreateMomentReq) Handler(c *gin.Context) (interface{}, error) {
 	tx := dao.DB.Begin()
-	user, _ := c.Get(enum.CurrentUser)
-	currentUser, _ := user.(*model.User)
+	currentUser, _ := common.GetCurrentUser(c)
 	moment := &model.Moment{
 		Context: r.Context,
 		UserId:  currentUser.Id,
