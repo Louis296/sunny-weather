@@ -24,3 +24,7 @@ func (r Handler) ListSelfMoment20220101(c *gin.Context) {
 func (r Handler) ListMoment20220101(c *gin.Context) {
 	handler(c, &moment_service.ListMomentReq{})
 }
+
+func (r Handler) ThumbUpMoment20220101(c *gin.Context) {
+	handler(c, &moment_service.ThumbUpMomentReq{})
+}

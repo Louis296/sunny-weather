@@ -52,3 +52,18 @@ func SaveMoment(moment *model.Moment, tx *gorm.DB) error {
 	tx = tx.Save(moment)
 	return tx.Error
 }
+
+func GetMomentUserThumb(momentId, userId int) *model.ThumbUp {
+	sql := DB
+	sql = sql.Model(&model.ThumbUp{}).Where("moment_id = ? and user_id = ?", momentId, userId)
+	var thumbUp model.ThumbUp
+	if err := sql.First(&thumbUp).Error; err != nil {
+		return nil
+	}
+	return &thumbUp
+}
+
+func CreateMomentThumbUp(thumbUp *model.ThumbUp, tx *gorm.DB) error {
+	tx = tx.Create(thumbUp)
+	return tx.Error
+}
