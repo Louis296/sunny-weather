@@ -32,5 +32,8 @@ func (r *DeleteMomentReq) Handler(c *gin.Context) (interface{}, error) {
 	if err := dao.DeleteMomentById(r.MomentId, tx); err != nil {
 		return nil, err
 	}
+	if err := dao.DeleteCommentByMomentId(r.MomentId, tx); err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
