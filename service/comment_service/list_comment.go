@@ -13,11 +13,12 @@ type ListCommentReq struct {
 }
 
 type ListCommentResp struct {
-	List []model.CommentResp
+	Total int
+	List  []model.CommentResp
 }
 
 func (r *ListCommentReq) Handler(c *gin.Context) (interface{}, error) {
-	result := dao.GetCommentsByMomentId(r.MomentId, r.Limit, r.Offset)
+	result, total := dao.GetCommentsByMomentId(r.MomentId, r.Limit, r.Offset)
 	var userIds []int
 	var list []model.CommentResp
 	for _, item := range result {
@@ -34,5 +35,5 @@ func (r *ListCommentReq) Handler(c *gin.Context) (interface{}, error) {
 		}
 		list = append(list, commentResp)
 	}
-	return ListCommentResp{List: list}, nil
+	return ListCommentResp{List: list, Total: total}, nil
 }

@@ -31,13 +31,16 @@ func DeleteCommentByMomentId(momentId int, tx *gorm.DB) error {
 	return tx.Error
 }
 
-func GetCommentsByMomentId(momentId, limit, offset int) []*model.Comment {
+func GetCommentsByMomentId(momentId, limit, offset int) ([]*model.Comment, int) {
 	sql := DB
-	sql = sql.Model(&model.Comment{}).Where("moment_id = ?", momentId).Limit(limit).Offset(limit * (offset - 1))
 	var comments []*model.Comment
+	var total int64
+	sql = sql.Model(&model.Comment{}).Where("moment_id = ?", momentId)
+	sql.Count(&total)
+	sql = sql.Limit(limit).Offset(limit * (offset - 1))
 	err := sql.Order("create_time desc").Scan(&comments).Error
 	if err != nil {
-		return nil
+		return nil, 0
 	}
-	return comments
+	return comments, int(total)
 }

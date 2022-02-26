@@ -13,17 +13,18 @@ type ListSelfMomentReq struct {
 }
 
 type ListSelfMomentResp struct {
-	List []model.MomentResp
+	Total int
+	List  []model.MomentResp
 }
 
 func (r *ListSelfMomentReq) Handler(c *gin.Context) (interface{}, error) {
 	currentUser, _ := common.GetCurrentUser(c)
-	result := dao.GetMomentsByUserId(currentUser.Id, r.Limit, r.Offset)
+	result, total := dao.GetMomentsByUserId(currentUser.Id, r.Limit, r.Offset)
 	var list []model.MomentResp
 	for _, item := range result {
 		momentResp := item.GenResp()
 		momentResp.User = currentUser.GenResp()
 		list = append(list, momentResp)
 	}
-	return ListSelfMomentResp{List: list}, nil
+	return ListSelfMomentResp{List: list, Total: total}, nil
 }

@@ -12,11 +12,12 @@ type ListMomentReq struct {
 }
 
 type ListMomentResp struct {
-	List []model.MomentResp
+	Total int
+	List  []model.MomentResp
 }
 
 func (r *ListMomentReq) Handler(c *gin.Context) (interface{}, error) {
-	result := dao.GetAllMoments(r.Limit, r.Offset)
+	result, total := dao.GetAllMoments(r.Limit, r.Offset)
 	var userIds []int
 	var list []model.MomentResp
 	for _, item := range result {
@@ -33,5 +34,5 @@ func (r *ListMomentReq) Handler(c *gin.Context) (interface{}, error) {
 		}
 		list = append(list, momentResp)
 	}
-	return ListMomentResp{List: list}, nil
+	return ListMomentResp{List: list, Total: total}, nil
 }

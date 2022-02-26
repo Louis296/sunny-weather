@@ -21,26 +21,32 @@ func GetMomentById(id int) *model.Moment {
 	return &moment
 }
 
-func GetMomentsByUserId(userId, limit, offset int) []*model.Moment {
+func GetMomentsByUserId(userId, limit, offset int) ([]*model.Moment, int) {
 	sql := DB
 	var moments []*model.Moment
-	sql = sql.Model(&model.Moment{}).Where("user_id=?", userId).Limit(limit).Offset(limit * (offset - 1))
+	var total int64
+	sql = sql.Model(&model.Moment{}).Where("user_id=?", userId)
+	sql.Count(&total)
+	sql = sql.Limit(limit).Offset(limit * (offset - 1))
 	err := sql.Order("update_time desc").Scan(&moments).Error
 	if err != nil {
-		return nil
+		return nil, 0
 	}
-	return moments
+	return moments, int(total)
 }
 
-func GetAllMoments(limit, offset int) []*model.Moment {
+func GetAllMoments(limit, offset int) ([]*model.Moment, int) {
 	sql := DB
 	var moments []*model.Moment
-	sql = sql.Model(&model.Moment{}).Limit(limit).Offset(limit * (offset - 1))
+	var total int64
+	sql = sql.Model(&model.Moment{})
+	sql.Count(&total)
+	sql = sql.Limit(limit).Offset(limit * (offset - 1))
 	err := sql.Order("update_time desc").Scan(&moments).Error
 	if err != nil {
-		return nil
+		return nil, 0
 	}
-	return moments
+	return moments, int(total)
 }
 
 func DeleteMomentById(id int, tx *gorm.DB) error {
