@@ -39,7 +39,9 @@ func doResp(c *gin.Context, data interface{}, err error) {
 	resp := response{Time: time.Now()}
 	if err != nil {
 		resp.Status = "Error"
-		resp.Data = err.Error()
+		resp.Data = struct {
+			Message string
+		}{Message: err.Error()}
 	} else {
 		resp.Status = "Success"
 		resp.Data = data
